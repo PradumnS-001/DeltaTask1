@@ -1,3 +1,10 @@
+:root{
+    --blue : rgba(44, 30, 168, 0.8);
+    --red : rgba(237, 51, 38, 0.8);
+    --red_shadow : 0.16rem 0.16rem 0.16rem rgba(87, 12, 7, 0.914), 0.3rem 0.3rem 0.3rem rgba(28, 28, 28, 0.644);
+    --blue_shadow: 0.16rem 0.16rem 0.16rem rgba(7, 27, 87, 0.914), 0.3rem 0.3rem 0.3rem rgba(28, 28, 28, 0.644);
+}
+
 *{
     box-sizing: border-box;
     padding: 0;
@@ -18,37 +25,95 @@ body{
 }
 
 .gameMap{
-    width: min(72vh,72vw);
+    width: min(72vh,90vw);
 }
 
 .player{
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: monospace;
     font-size: min(4vw, 4vh);
     width: 60vw;
-    padding: min(2vw, 2vh) min(4vw, 4vh);
+    padding: min(1.2vw, 1.2vh) min(2vh, 2vw);
     border-radius: 0.75rem;
     display: block;
-    box-shadow: 0.3rem 0.3rem 0.3rem rgba(28, 28, 28, 0.644);
 
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.info, .timer{
     display: flex;
     align-items: center;
     justify-content: space-between;
-    text-align: center;
+
+    width: fit-content;
+    background-color: whitesmoke;
+    border-radius: 0.75rem;
+
+    padding: 1% 1.5% 1% 1.5%;
+
+    box-shadow: 0.3rem 0.3rem 0.3rem rgba(28, 28, 28, 0.644);
+    text-shadow: 0.05rem 0.05rem 0.05rem rgba(28, 28, 28, 0.644);
+    font-weight: bold;
+}
+
+.map{
+    width: 60vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
 }
 
 p{
-    width: 6rem;
-    padding: 4px;
-    background-color: beige;
-    border-radius: 0.75rem;
+    padding-left: 0.9em;
+}
+
+.pfp{
+    max-width: max(2.8vw,2.8vh);
+    border-radius: 20%;
 }
 
 .red{
-    background-color: #ed3326;
-    color: #ed3326;
+    background-color: var(--red);
+    color: var(--red);
+    box-shadow: var(--red_shadow);
 }
 
 .blue{
-    background-color: #2c1ea8;
-    color: #2c1ea8;
+    background-color: var(--blue);
+    color: var(--blue);
+    box-shadow: var(--blue_shadow);
+}
+
+.reset, .pausePlay{
+    position: absolute;
+    width: min(10vw,10vh);
+    height:auto;
+    left: 0;
+    background-color: antiquewhite;
+    border-radius: 25%;
+}
+
+.reset{
+    top: 0;
+}
+.pausePlay{
+    bottom: 0;
+}
+.reset:hover, .pausePlay:hover{
+    background-color: bisque;
+    transform: scale(110%,110%);
+    transition-property: "background-color";
+    transition-duration: 0.3s;
+}
+
+@media screen and (orientation: portrait) {
+    .pfp{
+        border-radius: 50%;
+    }
+    .player, .map{
+        width: 90vw;
+    }
 }
