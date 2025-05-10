@@ -87,7 +87,18 @@ p{
     box-shadow: var(--blue_shadow);
 }
 
-.pause, .reset{
+#blue{
+    border: 1px solid #bfff0f;
+}
+#red{
+    border: 1px solid rgba(237, 51, 38, 0.8);
+}
+
+#blueTimer, #blueInfo{
+    background-color: #bfff0f;
+}
+
+.toggle, .reset{
     position: absolute;
     width: min(10vw,10vh);
     height:auto;
@@ -96,15 +107,15 @@ p{
     right: 0;
     box-shadow: 0.0rem 0.5rem rgba(76, 76, 76, 0.914);
 }
-.pause:hover, .reset:hover{
+.toggle:hover, .reset:hover{
     background-color: bisque;
 }
-.pause:active, .reset:active {
+.toggle:active, .reset:active {
   background-color: bisque;
   box-shadow: 0.0rem 0.4rem rgba(76, 76, 76, 0.914);
   transform: translateY(0.1rem);
 }
-.pause{
+.toggle{
     top:0;
 }
 .reset{

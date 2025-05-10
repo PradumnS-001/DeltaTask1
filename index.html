@@ -9,8 +9,8 @@
     <link rel="icon" type="icon/x-icon" href="imgs/deltaLogo.png">
 </head>
 <body>
-    <div class="player red">
-        <div class="info">
+    <div class="player red" id="red">
+        <div class="info" id="redInfo">
             <img src="imgs/redPlayer.jpg" alt="RedPFP" class="pfp red">
             <p>Red</p>
             <p>score</p>
@@ -20,12 +20,12 @@
     <div>
         <div class="map">
             <img src="imgs/gameMap.png" alt="imageMap" usemap="map" class="gameMap" onclick="swapTurn()">
-            <img src="imgs/pause.png" alt="pause button" class="pause" onclick="toggle()" id="toggle">
+            <img src="imgs/play.png" alt="toggle button" class="toggle" onclick="toggle()" id="toggle">
             <img src="imgs/reset.png" alt="reset button" class="reset" id="reset" onclick="reset()">
         </div>
     </div>
-    <div class="player blue">
-        <div class="info">
+    <div class="player blue" id="blue">
+        <div class="info" id="blueInfo">
             <img src="imgs/BluePlayer.jpg" alt="BluePFP" class="pfp blue">
             <p>Blue</p>
             <p>score</p>

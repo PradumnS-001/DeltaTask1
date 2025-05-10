@@ -34,21 +34,7 @@ function toggle(){
             clearInterval(t);
             t = null;
         }
-
-        if(blue.isTurn && !isGameOver){
-        blue.time -= etime;
-        etime = 0;
-        const mins = Math.floor(blue.time/60);
-        const sec = blue.time - mins * 60;
-        document.getElementById("blueTimer").innerHTML = `${mins}:${sec}`;
-        }
-        if(red.isTurn && !isGameOver){
-        red.time -= etime;
-        etime = 0;
-        const mins = Math.floor(red.time/60);
-        const sec = red.time - mins * 60;
-        document.getElementById("redTimer").innerHTML = `${mins}:${sec}`;
-        }
+        updateTime();        
     },1000);
 }
 
@@ -57,15 +43,49 @@ function reset(){
     red = new Player(false);
     document.getElementById("redTimer").innerHTML = "5:00";
     document.getElementById("blueTimer").innerHTML = "5:00";
+    document.getElementById("blueTimer").style.backgroundColor = "#bfff0f";
+    document.getElementById("blue").style.border = "1px solid #bfff0f";
+    document.getElementById("blueInfo").style.backgroundColor = "#bfff0f";
+    document.getElementById("redTimer").style.backgroundColor = "whitesmoke";
+    document.getElementById("red").style.border = "1px solid rgba(237, 51, 38, 0.8)";
+    document.getElementById("redInfo").style.backgroundColor = "whitesmoke";
 }
 
 function swapTurn(){
     if(!isGamePaused && blue.isTurn){
         blue.isTurn = false;
         red.isTurn = true;
+        document.getElementById("blueTimer").style.backgroundColor = "whitesmoke";
+        document.getElementById("blue").style.border = "1px solid rgba(7, 27, 87, 0.914)";
+        document.getElementById("blueInfo").style.backgroundColor = "whitesmoke";
+        document.getElementById("redTimer").style.backgroundColor = "#bfff0f";
+        document.getElementById("red").style.border = "1px solid #bfff0f";
+        document.getElementById("redInfo").style.backgroundColor = "#bfff0f";
     }
     else if(!isGamePaused && red.isTurn){
         red.isTurn = false;
         blue.isTurn = true;
+        document.getElementById("blueTimer").style.backgroundColor = "#bfff0f";
+        document.getElementById("blue").style.border = "1px solid #bfff0f";
+        document.getElementById("blueInfo").style.backgroundColor = "#bfff0f";
+        document.getElementById("redTimer").style.backgroundColor = "whitesmoke";
+        document.getElementById("red").style.border = "1px solid rgba(237, 51, 38, 0.8)";
+        document.getElementById("redInfo").style.backgroundColor = "whitesmoke";
+    }
+}
+
+function updateTime(){
+    if(blue.isTurn && !isGameOver){
+    blue.time -= etime;
+    etime = 0;
+    const mins = Math.floor(blue.time/60);
+    const sec = blue.time - mins * 60;
+    document.getElementById("blueTimer").innerHTML = `${mins}:${sec}`;
+    }
+    if(red.isTurn && !isGameOver){
+    red.time -= etime;        etime = 0;
+    const mins = Math.floor(red.time/60);
+    const sec = red.time - mins * 60;
+    document.getElementById("redTimer").innerHTML = `${mins}:${sec}`;
     }
 }
