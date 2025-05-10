@@ -87,26 +87,29 @@ p{
     box-shadow: var(--blue_shadow);
 }
 
-.reset, .pausePlay{
+.pause, .reset{
     position: absolute;
     width: min(10vw,10vh);
     height:auto;
-    left: 0;
     background-color: antiquewhite;
     border-radius: 25%;
+    right: 0;
+    box-shadow: 0.0rem 0.5rem rgba(76, 76, 76, 0.914);
 }
-
-.reset{
-    top: 0;
-}
-.pausePlay{
-    bottom: 0;
-}
-.reset:hover, .pausePlay:hover{
+.pause:hover, .reset:hover{
     background-color: bisque;
-    transform: scale(110%,110%);
-    transition-property: "background-color";
-    transition-duration: 0.3s;
+}
+.pause:active, .reset:active {
+  background-color: bisque;
+  box-shadow: 0.0rem 0.4rem rgba(76, 76, 76, 0.914);
+  transform: translateY(0.1rem);
+}
+.pause{
+    top:0;
+}
+.reset{
+    bottom:0;
+    display: none;
 }
 
 @media screen and (orientation: portrait) {
