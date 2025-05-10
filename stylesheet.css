@@ -30,7 +30,7 @@ body{
 
 .player{
     font-family: monospace;
-    font-size: min(4vw, 4vh);
+    font-size: 4.5vh;
     width: 60vw;
     padding: min(1.2vw, 1.2vh) min(2vh, 2vw);
     border-radius: 0.75rem;
@@ -115,5 +115,6 @@ p{
     }
     .player, .map{
         width: 90vw;
+        font-size: 6vw;
     }
 }
