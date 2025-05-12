@@ -33,19 +33,21 @@ body{
 }
 #blueTitan1,#blueTitan2,#blueTitan3,#blueTitan4{
     position: absolute;
-    height: 0;
+    height: min(4vw, 3vh);
     background-color: var(--blue);
-    width: 0;
-    top: 0;
-    left: 0;
+    width: min(4vw, 3vh);
+    border-radius: 50%;
+    display: none;
+    pointer-events: none;
 }
 #redTitan1,#redTitan2,#redTitan3,#redTitan4{
     position: absolute;
-    height: 0;
+    height: min(4vw, 3vh);
     background-color: var(--red);
-    width: 0;
-    top: 0;
-    left: 0;
+    width: min(4vw, 3vh);
+    border-radius: 50%;
+    display: none;
+    pointer-events: none;
 }
 
 .player{
@@ -153,3 +155,7 @@ p{
     }
 }
 
+#rc, #bc{
+    height: min(6vw,6vh);
+    display: none;
+}
