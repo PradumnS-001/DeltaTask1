@@ -180,6 +180,9 @@ p{
         width: 90vw;
         font-size: 6vw;
     }
+    #Ttimer{
+        font-size: 1.2rem;
+    }
 }
 
 #rc, #bc{
