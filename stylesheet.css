@@ -49,6 +49,33 @@ body{
     display: none;
     pointer-events: none;
 }
+#selector{
+    position:absolute;
+    height: min(4.6vw, 3.6vh);
+    background-color: rgba(76, 76, 76, 0);
+    width: min(4.6vw, 3.6vh);
+    pointer-events: none;
+    border: min(0.5vw,0.5vh) solid #00c02a;
+    border-radius: 50%;
+    display: none;
+}
+
+#Ttimer{
+    position:absolute;
+    top: 0;
+    left: 0;
+    border-radius: 2rem;
+    width: min(16vw, 16vh);
+    height: min(8vw, 8vh);
+    background-color: antiquewhite;
+    color: #292f37;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-family: monospace;
+    font-weight: bolder;
+}
 
 .player{
     font-family: monospace;

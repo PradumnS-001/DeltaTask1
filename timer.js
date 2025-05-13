@@ -3,6 +3,7 @@ let isGameOver = false;
 let isPlacementPhase = true;
 let tempVar = null;
 let n = null;
+let totalTime = 600;
 let etime = 0;
 let move = false;
 const image = document.getElementById("gameMap");
@@ -10,24 +11,24 @@ let sizingRatio = 844 / image.clientHeight;
 let ulkdnodes = [1,2,3,4,5,6];
 let inner = [18,17,16,15,14,13];
 let nodes = [
-    [1,[2,6,7], [34, 424], [2,3,1]],
-    [2,[1,3], [229,88], [2,1]],
-    [3,[2,4,9], [616,88], [1,2,1]],
-    [4,[3,5], [809,424], [2,1]],
-    [5,[4,6,11], [616,758], [1,1,1]],
-    [6,[1,5], [229,758], [3,1]],
-    [7,[1,8,12], [164,424], [1,5,4]],
+    [1,[2,6,7], [33, 422], [2,3,1]],
+    [2,[1,3], [227,87], [2,1]],
+    [3,[2,4,9], [616,87], [1,2,1]],
+    [4,[3,5], [809,422], [2,1]],
+    [5,[4,6,11], [615,757], [1,1,1]],
+    [6,[1,5], [227,757], [3,1]],
+    [7,[1,8,12], [164,422], [1,5,4]],
     [8,[7,9,17], [293,200], [5,6,1]],
     [9,[3,8,10], [551,200], [1,6,4]],
-    [10,[9,11,15], [680,424], [4,5,1]],
+    [10,[9,11,15], [680,422], [4,5,1]],
     [11,[5,10,12], [551,646], [1,5,6]],
     [12,[7,11,13], [293,646], [4,6,1]],
     [13,[12,14,18], [357,535], [1,8,9]],
-    [14,[13,18], [488,535], [8,8]],
-    [15,[10,14,16], [551,424], [1,8,9]],
+    [14,[13,15], [488,535], [8,8]],
+    [15,[10,14,16], [551,422], [1,8,9]],
     [16,[15,17], [488,311], [9,8]],
     [17,[8,16,18], [357,311], [1,8,8]],
-    [18,[13,17], [293,424], [9,8]]
+    [18,[13,17], [293,422], [9,8]]
 ];
 let x = 0;
 let y = 0;
@@ -38,7 +39,7 @@ class Player{
         this.isTurn = isTurn;
         this.score = 0;
         this.tloc = [];
-        this.time = 300;
+        this.time = 60;
     }
 }
 
@@ -56,7 +57,7 @@ image.addEventListener("click", (event)=>{
                 isPlacementPhase = false;
             }
             let isValidn = isnValid(n);
-            if(isValidn == 0){move = false;}
+            if(isValidn == 0){move = false;document.getElementById("selector").style.display = "none";}
             if(isValidn == 1 && !move){
                 if(blue.isTurn && blue.tloc.length != 4){
                     blue.tloc.push(n);
@@ -76,10 +77,15 @@ image.addEventListener("click", (event)=>{
             else if(isValidn == 2 && !move){
                 tempVar = n;
                 move = true;
+                document.getElementById("selector").style.display = "block";
+                document.getElementById("selector").style.left = ((nodes[tempVar-1][2][0]-20)/sizingRatio)+"px";
+                document.getElementById("selector").style.top = ((nodes[tempVar-1][2][1]-20)/sizingRatio)+"px";
+
             }  
             else if(isValidn==1 && move && nodes[tempVar-1][1].includes(n) && blue.isTurn){
                 blue.tloc[blue.tloc.indexOf(tempVar)] = n;
                 move = false;
+                document.getElementById("selector").style.display = "none";
                 allTitansInGame();
                 score();
                 placeTitan();
@@ -89,6 +95,7 @@ image.addEventListener("click", (event)=>{
             else if(isValidn==1 && move && nodes[tempVar-1][1].includes(n) && red.isTurn){
                 red.tloc[red.tloc.indexOf(tempVar)] = n;
                 move = false;
+                document.getElementById("selector").style.display = "none";
                 allTitansInGame();
                 score();
                 placeTitan();
@@ -102,29 +109,29 @@ image.addEventListener("click", (event)=>{
         if(isGameOver){EndGame();}
     });
 
-function toggle(){
+let t = null;
+function toggle(){    
     if(!isGamePaused && !isGameOver){
+        clearInterval(t);
+        t = null;
         isGamePaused = true;
         document.getElementById("toggle").src = "imgs/play.png";
         document.getElementById("reset").style.display = "block";
     }
     else if(isGamePaused && !isGameOver){
         isGamePaused = false;
-        document.getElementById("toggle").src = "imgs/pause.png";
-        document.getElementById("reset").style.display = "none";
-    }
-
-    let t = setInterval(()=>{
+        t = setInterval(()=>{
         if(red.time !=0 && blue.time!=0 && !isGamePaused)
             etime++;
         else if(red.time == 0 || blue.time == 0)
             isGameOver = true;
-        if(isGamePaused || isGameOver){
-            clearInterval(t);
-            t = null;
-        }
         updateTime();      
     },1000);
+        document.getElementById("toggle").src = "imgs/pause.png";
+        document.getElementById("reset").style.display = "none";
+    }
+
+    
 }
 
 function reset(){
@@ -133,10 +140,11 @@ function reset(){
     isPlacementPhase = true;
     isGameOver = false;
     isGamePaused = true;
+    totalTime = 600;
     document.getElementById("rc").style.display = "none";
     document.getElementById("bc").style.display = "none";
-    document.getElementById("redTimer").innerHTML = "5:00";
-    document.getElementById("blueTimer").innerHTML = "5:00";
+    document.getElementById("redTimer").innerHTML = "1:00";
+    document.getElementById("blueTimer").innerHTML = "1:00";
     document.getElementById("rs").innerHTML = "+0";
     document.getElementById("bs").innerHTML = "+0";
     document.getElementById("blueTimer").style.backgroundColor = "#bfff0f";
@@ -159,12 +167,18 @@ function reset(){
     document.getElementById("redTitan2").style.display = "none";
     document.getElementById("redTitan3").style.display = "none";
     document.getElementById("redTitan4").style.display = "none";
+    document.getElementById("selector").style.display = "none";
+
+    totalTime = 600;
+    document.getElementById("Ttimer").innerHTML = "10:00";
 }
 
 function swapTurn(){
     if(!isGamePaused && blue.isTurn){
         blue.isTurn = false;
         red.isTurn = true;
+        blue.time = 60;
+        document.getElementById("blueTimer").innerHTML = "1:00";
         document.getElementById("blueTimer").style.backgroundColor = "whitesmoke";
         document.getElementById("blue").style.border = "1px solid rgba(7, 27, 87, 0.914)";
         document.getElementById("blueInfo").style.backgroundColor = "whitesmoke";
@@ -175,6 +189,8 @@ function swapTurn(){
     else if(!isGamePaused && red.isTurn){
         red.isTurn = false;
         blue.isTurn = true;
+        red.time = 60;
+        document.getElementById("redTimer").innerHTML = "1:00";
         document.getElementById("blueTimer").style.backgroundColor = "#bfff0f";
         document.getElementById("blue").style.border = "1px solid #bfff0f";
         document.getElementById("blueInfo").style.backgroundColor = "#bfff0f";
@@ -186,17 +202,30 @@ function swapTurn(){
 
 function updateTime(){
     if(blue.isTurn && !isGameOver){
-    blue.time -= etime;
-    etime = 0;
-    const mins = Math.floor(blue.time/60);
-    const sec = blue.time - mins * 60;
-    document.getElementById("blueTimer").innerHTML = mins+":"+sec;
+        blue.time -= etime;
+        etime = 0;
+        const mins = Math.floor(blue.time/60);
+        const sec = blue.time - mins * 60;
+        document.getElementById("blueTimer").innerHTML = mins+":"+sec;
+        totalTime -= 1;
+        let m = Math.floor(totalTime/60);
+        let s = totalTime - m*60;
+        document.getElementById("Ttimer").innerHTML = m+":"+s;
     }
     if(red.isTurn && !isGameOver){
-    red.time -= etime;        etime = 0;
-    const mins = Math.floor(red.time/60);
-    const sec = red.time - mins * 60;
-    document.getElementById("redTimer").innerHTML = mins+":"+sec;
+        red.time -= etime; 
+        etime = 0;
+        const mins = Math.floor(red.time/60);
+        const sec = red.time - mins * 60;
+        document.getElementById("redTimer").innerHTML = mins+":"+sec;
+        totalTime -= 1;
+        let m = floor(totalTime/60);
+        let s = totalTime - m*60;
+        document.getElementById("Ttimer").innerHTML = m+":"+s;
+    }
+    if(blue.time == 0 || red.time == 0 || totalTime == 0){
+        isGameOver = true;
+        EndGame();
     }
 }
 
@@ -208,7 +237,7 @@ function whichNode(){
 
     for(let node of nodes){
         let dist = (node[2][0]-ax)**2 + (node[2][1]-ay)**2;
-        if(dist <= 484){
+        if(dist <= 900){
             return node[0];
         }
     }
@@ -228,29 +257,29 @@ function placeTitan(){
     if(blue.tloc[0] == 0){blueTitan1.style.display = "none";}
     else{
         blueTitan1.style.display = "block";
-        blueTitan1.style.left = ((nodes[blue.tloc[0]-1][2][0]-22) / sizingRatio).toString()+"px";
-        blueTitan1.style.top = ((nodes[blue.tloc[0]-1][2][1]-22) / sizingRatio).toString()+"px";
+        blueTitan1.style.left = ((nodes[blue.tloc[0]-1][2][0]-17) / sizingRatio).toString()+"px";
+        blueTitan1.style.top = ((nodes[blue.tloc[0]-1][2][1]-17) / sizingRatio).toString()+"px";
     }
     if(blue.tloc.length > 1){
         if(blue.tloc[1] == 0){blueTitan2.style.display = "none";}
         else{
             blueTitan2.style.display = "block";
-            blueTitan2.style.left = ((nodes[blue.tloc[1]-1][2][0]-22) / sizingRatio).toString()+"px";
-            blueTitan2.style.top = ((nodes[blue.tloc[1]-1][2][1]-22) / sizingRatio).toString()+"px";
+            blueTitan2.style.left = ((nodes[blue.tloc[1]-1][2][0]-17) / sizingRatio).toString()+"px";
+            blueTitan2.style.top = ((nodes[blue.tloc[1]-1][2][1]-17) / sizingRatio).toString()+"px";
         }
         if(blue.tloc.length > 2){
             if(blue.tloc[2] == 0){blueTitan3.style.display = "none";}
             else{
                 blueTitan3.style.display = "block";
-                blueTitan3.style.left = ((nodes[blue.tloc[2]-1][2][0]-22) / sizingRatio).toString()+"px";
-                blueTitan3.style.top = ((nodes[blue.tloc[2]-1][2][1]-22) / sizingRatio).toString()+"px";
+                blueTitan3.style.left = ((nodes[blue.tloc[2]-1][2][0]-17) / sizingRatio).toString()+"px";
+                blueTitan3.style.top = ((nodes[blue.tloc[2]-1][2][1]-17) / sizingRatio).toString()+"px";
             }
             if(blue.tloc.length > 3){
                 if(blue.tloc[3] == 0){blueTitan4.style.display = "none";}
                 else{
                     blueTitan4.style.display = "block";
-                    blueTitan4.style.left = ((nodes[blue.tloc[3]-1][2][0]-22) / sizingRatio).toString()+"px";
-                    blueTitan4.style.top = ((nodes[blue.tloc[3]-1][2][1]-22) / sizingRatio).toString()+"px";
+                    blueTitan4.style.left = ((nodes[blue.tloc[3]-1][2][0]-17) / sizingRatio).toString()+"px";
+                    blueTitan4.style.top = ((nodes[blue.tloc[3]-1][2][1]-17) / sizingRatio).toString()+"px";
                 }
             }
         }
@@ -259,30 +288,30 @@ function placeTitan(){
         if(red.tloc[0] == 0){redTitan1.style.display = "none";}
         else{
             redTitan1.style.display = "block";
-            redTitan1.style.left = ((nodes[red.tloc[0]-1][2][0]-22) / sizingRatio).toString()+"px";
-            redTitan1.style.top = ((nodes[red.tloc[0]-1][2][1]-22) / sizingRatio).toString()+"px";
+            redTitan1.style.left = ((nodes[red.tloc[0]-1][2][0]-17) / sizingRatio).toString()+"px";
+            redTitan1.style.top = ((nodes[red.tloc[0]-1][2][1]-17) / sizingRatio).toString()+"px";
         }
     }
     if(red.tloc.length > 1){
         if(red.tloc[1] == 0){redTitan2.style.display = "none";}
         else{
             redTitan2.style.display = "block";
-            redTitan2.style.left = ((nodes[red.tloc[1]-1][2][0]-22) / sizingRatio).toString()+"px";
-            redTitan2.style.top = ((nodes[red.tloc[1]-1][2][1]-22) / sizingRatio).toString()+"px";
+            redTitan2.style.left = ((nodes[red.tloc[1]-1][2][0]-17) / sizingRatio).toString()+"px";
+            redTitan2.style.top = ((nodes[red.tloc[1]-1][2][1]-17) / sizingRatio).toString()+"px";
         }
         if(red.tloc.length > 2){
             if(red.tloc[2] == 0){redTitan3.style.display = "none";}
             else{
                 redTitan3.style.display = "block";
-                redTitan3.style.left = ((nodes[red.tloc[2]-1][2][0]-22) / sizingRatio).toString()+"px";
-                redTitan3.style.top = ((nodes[red.tloc[2]-1][2][1]-22) / sizingRatio).toString()+"px";
+                redTitan3.style.left = ((nodes[red.tloc[2]-1][2][0]-17) / sizingRatio).toString()+"px";
+                redTitan3.style.top = ((nodes[red.tloc[2]-1][2][1]-17) / sizingRatio).toString()+"px";
             }
             if(red.tloc.length > 3){
                 if(red.tloc[3] == 0){redTitan4.style.display = "none";}
                 else{
                     redTitan4.style.display = "block";
-                    redTitan4.style.left = ((nodes[red.tloc[3]-1][2][0]-22) / sizingRatio).toString()+"px";
-                    redTitan4.style.top = ((nodes[red.tloc[3]-1][2][1]-22) / sizingRatio).toString()+"px";
+                    redTitan4.style.left = ((nodes[red.tloc[3]-1][2][0]-17) / sizingRatio).toString()+"px";
+                    redTitan4.style.top = ((nodes[red.tloc[3]-1][2][1]-17) / sizingRatio).toString()+"px";
                 }
             }
         }
