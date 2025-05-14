@@ -24,7 +24,7 @@ let nodes = [
     [11,[5,10,12], [551,646], [1,5,6]],
     [12,[7,11,13], [293,646], [4,6,1]],
     [13,[12,14,18], [357,535], [1,8,9]],
-    [14,[13,15], [483,532], [8,8]],
+    [14,[13,15], [486,534], [8,8]],
     [15,[10,14,16], [551,422], [1,8,9]],
     [16,[15,17], [488,311], [9,8]],
     [17,[8,16,18], [357,311], [1,8,8]],
@@ -40,6 +40,7 @@ class Player{
         this.score = 0;
         this.tloc = [];
         this.time = 60;
+        this.all0 = false;
     }
 }
 
@@ -108,7 +109,13 @@ image.addEventListener("click", (event)=>{
                 swapTurn();
                 tempVar = null;
             }
-
+            if(red.tloc.length == 4 && blue.tloc.length == 4){
+                isPlacementPhase = false;
+            }
+            allTitansInGame();
+            score();
+            placeTitan();
+            if(isGameOver){EndGame();}
             if(isInnerCirc())
                 isGameOver = true;
         }
@@ -128,13 +135,11 @@ function toggle(){
         isGamePaused = false;
         t = setInterval(()=>{
         etime += 1;
-        updateTime();      
+        updateTime();
     },1000);
         document.getElementById("toggle").src = "imgs/pause.png";
         document.getElementById("reset").style.display = "none";
-    }
-
-    
+    }    
 }
 
 function reset(){
@@ -165,6 +170,7 @@ function reset(){
     move = false;
     ulkdnodes = [1,2,3,4,5,6];
     document.getElementById("reset").style.display = "none";
+    document.getElementById("toggle").src = "imgs/play.png"
 
     document.getElementById("blueTitan1").style.display = "none";
     document.getElementById("blueTitan2").style.display = "none";
@@ -263,11 +269,13 @@ function placeTitan(){
     const redTitan3 = document.getElementById("redTitan3");
     const redTitan4 = document.getElementById("redTitan4");
 
-    if(blue.tloc[0] == 0){blueTitan1.style.display = "none";}
-    else{
-        blueTitan1.style.display = "block";
-        blueTitan1.style.left = ((nodes[blue.tloc[0]-1][2][0]-17) / sizingRatio).toString()+"px";
-        blueTitan1.style.top = ((nodes[blue.tloc[0]-1][2][1]-17) / sizingRatio).toString()+"px";
+    if(blue.tloc.length > 0){
+        if(blue.tloc[0] == 0){blueTitan1.style.display = "none";}
+        else{
+            blueTitan1.style.display = "block";
+            blueTitan1.style.left = ((nodes[blue.tloc[0]-1][2][0]-17) / sizingRatio).toString()+"px";
+            blueTitan1.style.top = ((nodes[blue.tloc[0]-1][2][1]-17) / sizingRatio).toString()+"px";
+        }
     }
     if(blue.tloc.length > 1){
         if(blue.tloc[1] == 0){blueTitan2.style.display = "none";}
@@ -394,7 +402,7 @@ function score(){
     for(let i of blue.tloc){
         if(i != 0){blur.push(i);}
     }
-    if(blur.length < 2 && !isPlacementPhase){isGameOver = true;}
+    if(blur.length < 2 && !isPlacementPhase){isGameOver = true; blue.all0 = true;}
     else{
         for(let i of blur){
             for(let j of blur){
@@ -409,7 +417,7 @@ function score(){
     for(let i of red.tloc){
         if(i != 0){redr.push(i);}
     }
-    if(redr.length < 2 && !isPlacementPhase){isGameOver = true;}
+    if(redr.length < 2 && !isPlacementPhase){isGameOver = true; red.all0 = true;}
     else{
         for(let i of redr){
             for(let j of redr){
@@ -420,6 +428,8 @@ function score(){
         }
         if(red.score != 0){red.score /= 2;}
     }
+    if(isGameOver)
+        EndGame();
 
     document.getElementById("rs").innerHTML = "+" + red.score;
     document.getElementById("bs").innerHTML = "+" + blue.score;
@@ -437,10 +447,18 @@ function isInnerCirc(){
 
 function EndGame(){
     totalTime = 0;
-    if(blue.time == 0|| blue.score <= red.score)
+    if(blue.time <= 0 || blue.all0){
         redWon();
-    else if(red.time == 0|| red.score < blue.score)
+    }
+    else if(red.time <= 0 || red.all0){
         blueWon();
+    }
+    else if(blue.score >= red.score){
+        blueWon();
+    }
+    else{
+        redWon();
+    }
     document.getElementById("reset").style.display = "block";
     document.getElementById("Ttimer").innerHTML = "--:--";
     document.getElementById("blueTimer").innerHTML = "-:--";
