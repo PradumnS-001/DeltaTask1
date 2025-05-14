@@ -8,6 +8,10 @@ let etime = 0;
 let move = false;
 const image = document.getElementById("gameMap");
 let sizingRatio = 844 / image.clientHeight;
+setInterval(() => {
+    sizingRatio = 844 / image.clientHeight;
+    rect = image.getBoundingClientRect();
+}, 25);
 let ulkdnodes = [1,2,3,4,5,6];
 let inner = [18,17,16,15,14,13];
 let nodes = [
@@ -32,7 +36,7 @@ let nodes = [
 ];
 let x = 0;
 let y = 0;
-const rect = image.getBoundingClientRect();
+let rect = image.getBoundingClientRect();
 
 class Player{
     constructor(isTurn){
