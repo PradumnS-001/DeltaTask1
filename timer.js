@@ -24,7 +24,7 @@ let nodes = [
     [11,[5,10,12], [551,646], [1,5,6]],
     [12,[7,11,13], [293,646], [4,6,1]],
     [13,[12,14,18], [357,535], [1,8,9]],
-    [14,[13,15], [488,535], [8,8]],
+    [14,[13,15], [483,532], [8,8]],
     [15,[10,14,16], [551,422], [1,8,9]],
     [16,[15,17], [488,311], [9,8]],
     [17,[8,16,18], [357,311], [1,8,8]],
@@ -58,7 +58,7 @@ image.addEventListener("click", (event)=>{
             }
             let isValidn = isnValid(n);
             if(isValidn == 0){move = false;document.getElementById("selector").style.display = "none";}
-            if(isValidn == 1 && !move){
+            else if(isValidn == 1 && !move){
                 if(blue.isTurn && blue.tloc.length != 4){
                     blue.tloc.push(n);
                     allTitansInGame();
@@ -213,8 +213,8 @@ function updateTime(){
             blue.time -= etime;
             totalTime -= etime;
             if(blue.time > 0){
-                document.getElementById("blueTimer").innerHTML = Math.floor(blue.time/60)+":"+(blue.time - Math.floor(blue.time/60) * 60);
-                document.getElementById("Ttimer").innerHTML = Math.floor(totalTime/60)+":"+(totalTime - Math.floor(totalTime/60)*60);
+                document.getElementById("blueTimer").innerHTML = (Math.floor(blue.time/60)).toString().padStart(1,"0")+":"+((blue.time - Math.floor(blue.time/60) * 60)).toString().padStart(2,"0");
+                document.getElementById("Ttimer").innerHTML = (Math.floor(totalTime/60)).toString().padStart(2,"0")+":"+(totalTime - Math.floor(totalTime/60)*60).toString().padStart(2,"0");
                 etime = 0;
             }
             else{
@@ -226,8 +226,8 @@ function updateTime(){
             red.time -= etime;
             totalTime -= etime;
             if(red.time > 0){
-                document.getElementById("redTimer").innerHTML = Math.floor(red.time/60)+":"+(red.time - Math.floor(red.time/60) * 60);
-                document.getElementById("Ttimer").innerHTML = Math.floor(totalTime/60)+":"+(totalTime - Math.floor(totalTime/60)*60);
+                document.getElementById("redTimer").innerHTML = (Math.floor(red.time/60)).toString().padStart(1,"0")+":"+((red.time - Math.floor(red.time/60) * 60)).toString().padStart(2,"0");
+                document.getElementById("Ttimer").innerHTML = (Math.floor(totalTime/60)).toString().padStart(2,"0")+":"+(totalTime - Math.floor(totalTime/60)*60).toString().padStart(2,"0");
                 etime = 0;
             }
             else{
@@ -439,7 +439,7 @@ function EndGame(){
     totalTime = 0;
     if(blue.time == 0|| blue.score <= red.score)
         redWon();
-    if(red.time == 0|| red.score < blue.score)
+    else if(red.time == 0|| red.score < blue.score)
         blueWon();
     document.getElementById("reset").style.display = "block";
     document.getElementById("Ttimer").innerHTML = "--:--";
