@@ -81,7 +81,13 @@ image.addEventListener("click", (event)=>{
                 document.getElementById("selector").style.left = ((nodes[tempVar-1][2][0]-20)/sizingRatio)+"px";
                 document.getElementById("selector").style.top = ((nodes[tempVar-1][2][1]-20)/sizingRatio)+"px";
 
-            }  
+            } 
+            else if(isValidn == 2 && move){
+                tempVar = n;
+                document.getElementById("selector").style.display = "block";
+                document.getElementById("selector").style.left = ((nodes[tempVar-1][2][0]-20)/sizingRatio)+"px";
+                document.getElementById("selector").style.top = ((nodes[tempVar-1][2][1]-20)/sizingRatio)+"px";
+            } 
             else if(isValidn==1 && move && nodes[tempVar-1][1].includes(n) && blue.isTurn){
                 blue.tloc[blue.tloc.indexOf(tempVar)] = n;
                 move = false;
@@ -121,10 +127,7 @@ function toggle(){
     else if(isGamePaused && !isGameOver){
         isGamePaused = false;
         t = setInterval(()=>{
-        if(red.time !=0 && blue.time!=0 && !isGamePaused)
-            etime++;
-        else if(red.time == 0 || blue.time == 0)
-            isGameOver = true;
+        etime += 1;
         updateTime();      
     },1000);
         document.getElementById("toggle").src = "imgs/pause.png";
@@ -135,6 +138,10 @@ function toggle(){
 }
 
 function reset(){
+    if(t != null){
+        clearInterval(t);
+        t = null;
+    }
     blue = new Player(true);
     red = new Player(false);
     isPlacementPhase = true;
@@ -201,32 +208,34 @@ function swapTurn(){
 }
 
 function updateTime(){
-    if(blue.isTurn && !isGameOver){
-        blue.time -= etime;
-        etime = 0;
-        const mins = Math.floor(blue.time/60);
-        const sec = blue.time - mins * 60;
-        document.getElementById("blueTimer").innerHTML = mins+":"+sec;
-        totalTime -= 1;
-        let m = Math.floor(totalTime/60);
-        let s = totalTime - m*60;
-        document.getElementById("Ttimer").innerHTML = m+":"+s;
-    }
-    if(red.isTurn && !isGameOver){
-        red.time -= etime; 
-        etime = 0;
-        const mins = Math.floor(red.time/60);
-        const sec = red.time - mins * 60;
-        document.getElementById("redTimer").innerHTML = mins+":"+sec;
-        totalTime -= 1;
-        let m = floor(totalTime/60);
-        let s = totalTime - m*60;
-        document.getElementById("Ttimer").innerHTML = m+":"+s;
-    }
-    if(blue.time == 0 || red.time == 0 || totalTime == 0){
-        isGameOver = true;
-        EndGame();
-    }
+    if(totalTime > 1){
+        if(blue.isTurn && !isGameOver){
+            blue.time -= etime;
+            totalTime -= etime;
+            if(blue.time > 0){
+                document.getElementById("blueTimer").innerHTML = Math.floor(blue.time/60)+":"+(blue.time - Math.floor(blue.time/60) * 60);
+                document.getElementById("Ttimer").innerHTML = Math.floor(totalTime/60)+":"+(totalTime - Math.floor(totalTime/60)*60);
+                etime = 0;
+            }
+            else{
+                isGameOver = true;
+                EndGame();
+            }
+        }
+        if(red.isTurn && !isGameOver){
+            red.time -= etime;
+            totalTime -= etime;
+            if(red.time > 0){
+                document.getElementById("redTimer").innerHTML = Math.floor(red.time/60)+":"+(red.time - Math.floor(red.time/60) * 60);
+                document.getElementById("Ttimer").innerHTML = Math.floor(totalTime/60)+":"+(totalTime - Math.floor(totalTime/60)*60);
+                etime = 0;
+            }
+            else{
+                isGameOver = true;
+                EndGame();
+            }
+        }
+    } else{isGameOver = true; EndGame();}
 }
 
 function whichNode(){
@@ -427,11 +436,15 @@ function isInnerCirc(){
 }
 
 function EndGame(){
+    totalTime = 0;
     if(blue.time == 0|| blue.score <= red.score)
         redWon();
     if(red.time == 0|| red.score < blue.score)
         blueWon();
     document.getElementById("reset").style.display = "block";
+    document.getElementById("Ttimer").innerHTML = "--:--";
+    document.getElementById("blueTimer").innerHTML = "-:--";
+    document.getElementById("redTimer").innerHTML = "-:--";
 }
 
 function blueWon(){
